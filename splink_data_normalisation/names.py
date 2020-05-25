@@ -1,6 +1,20 @@
 from pyspark.sql.functions import expr
+from pyspark.sql.dataframe import DataFrame
 
-def normalise_names(df, name_cols, drop_orig=True):
+def normalise_names(df:DataFrame, name_cols: list, drop_orig:bool=True):
+    """Take a one or more name columns in a list and normalise the names 
+    so one name appears in each column consistently
+
+    Args:
+        df (DataFrame): Spark DataFrame
+        name_cols (list): A list of columns that contain names, in order from first name to last name
+        drop_orig (bool, optional): Drop the original columns after normalisation. Defaults to True.
+
+    Returns:
+        DataFrame: A Spark DataFrame with normalised name columns
+    """    
+
+
     name_col_joined = ", ".join(name_cols)
     df = df.withColumn('name_concat', expr(f"concat_ws(' ', {name_col_joined})"))
     df = df.withColumn('name_concat', expr('lower(name_concat)'))
