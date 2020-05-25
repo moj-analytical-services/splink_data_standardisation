@@ -3,6 +3,7 @@ from pyspark.sql.functions import expr
 def normalise_names(df, name_cols, drop_orig=True):
     name_col_joined = ", ".join(name_cols)
     df = df.withColumn('name_concat', expr(f"concat_ws(' ', {name_col_joined})"))
+    df = df.withColumn('name_concat', expr('lower(name_concat)'))
     df = df.withColumn('name_concat', expr("regexp_replace(name_concat, '[\\-\\.]', ' ')"))
     df = df.withColumn('name_arr', expr("split(name_concat, ' ')"))
     df = df.withColumn('surname_norm', expr("case when surname is not null then element_at(name_arr,-1) else null end"))

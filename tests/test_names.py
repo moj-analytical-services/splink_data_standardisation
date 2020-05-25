@@ -8,8 +8,8 @@ from pyspark.sql import Row
 def test_names_1(spark):
 
     names_list = [
-        {"id":1, "first_name":"john","surname":"smith jones"},
-        {"id":2, "first_name":"john","surname":"smith-jones"},
+        {"id":1, "first_name":"John","surname":"smith jones"},
+        {"id":2, "first_name":"john","surname":"Smith-Jones"},
         {"id":3, "first_name":"john.smith","surname":"jones"}
         ]
 
