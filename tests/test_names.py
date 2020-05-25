@@ -46,7 +46,6 @@ def test_names_1(spark):
      ]
 
     df_expected = pd.DataFrame(df_expected)
-    print(df_result)
 
     pd.testing.assert_frame_equal(df_result,df_expected)
 
