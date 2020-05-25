@@ -3,7 +3,7 @@ import datetime
 import pytest
 import pandas as pd 
 
-from sparklink_data_normalisation.date_of_birth import normalise_dob 
+from splink_data_normalisation.date_of_birth import normalise_dob 
 from pyspark.sql import Row
 
 def test_dob_1(spark):

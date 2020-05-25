@@ -2,7 +2,7 @@
 import pytest
 import pandas as pd 
 
-from sparklink_data_normalisation.names import normalise_names 
+from splink_data_normalisation.names import normalise_names 
 from pyspark.sql import Row
 
 def test_names_1(spark):

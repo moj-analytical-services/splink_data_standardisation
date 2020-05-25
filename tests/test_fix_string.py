@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 
-from sparklink_data_normalisation.fix_string import fix_zero_length_strings
+from splink_data_normalisation.fix_string import fix_zero_length_strings
 from pyspark.sql import Row
 
 
