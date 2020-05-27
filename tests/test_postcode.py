@@ -15,6 +15,9 @@ def test_pc_1(spark):
         {"id": 5, "postcode": "AB1C 2DE"},
         {"id": 6, "postcode": "AB1C2DE"},
         {"id": 7, "postcode": "  ab1 2CD "},
+        {"id": 8, "postcode": "AB12C"},
+        {"id": 9, "postcode": "AB12"},
+        {"id": 10, "postcode": "AB1"},
     ]
 
     df = spark.createDataFrame(Row(**x) for x in postcode_list)
@@ -29,7 +32,11 @@ def test_pc_1(spark):
         {"id": 4, "outward_postcode_norm": "AB12", "inward_postcode_norm": "3CD"},
         {"id": 5, "outward_postcode_norm": "AB1C", "inward_postcode_norm": "2DE"},
         {"id": 6, "outward_postcode_norm": "AB1C", "inward_postcode_norm": "2DE"},
-        {"id": 7, "outward_postcode_norm": "AB1", "inward_postcode_norm": "2CD"}
+        {"id": 7, "outward_postcode_norm": "AB1", "inward_postcode_norm": "2CD"},
+        {"id": 8, "outward_postcode_norm": "AB12", "inward_postcode_norm": None},
+        {"id": 9, "outward_postcode_norm": "AB12", "inward_postcode_norm": None},
+        {"id": 10, "outward_postcode_norm": "AB1", "inward_postcode_norm": None},
+
     ]
 
     df_expected = pd.DataFrame(expected)

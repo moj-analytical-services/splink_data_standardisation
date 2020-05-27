@@ -14,14 +14,30 @@ def postcode_to_inward_outward(df: DataFrame, pc_field: str, drop_orig:bool = Tr
 
     sql = f"upper(replace({pc_field}, ' ', ''))"
     df = df.withColumn("pc_nospace_temp__", expr(sql))
+
+    # If the postcode is long enough, parse out inner outer
+    # If it's too short, assume we only have the outer part
+
+    sql = """
+    case 
+    when length(pc_nospace_temp__) >= 6 then left(pc_nospace_temp__, length(pc_nospace_temp__) - 3)
+    else left(pc_nospace_temp__, 4)
+    end
+    """
     
-    sql = f"""left(pc_nospace_temp__, length(pc_nospace_temp__) - 3)"""
+    # sql = f"""left(pc_nospace_temp__, length(pc_nospace_temp__) - 3)"""
     df = df.withColumn("outward_postcode_norm", expr(sql))
 
     sql = f"""right(pc_nospace_temp__, 3)"""
-    df = df.withColumn("inward_postcode_norm", expr(sql))
 
-   
+    sql = """
+    case 
+    when length(pc_nospace_temp__) >= 6 then right(pc_nospace_temp__, 3)
+    else null 
+    end
+    """
+
+    df = df.withColumn("inward_postcode_norm", expr(sql))
 
     df = df.drop("pc_nospace_temp__")
 
