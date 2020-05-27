@@ -14,7 +14,7 @@ def test_pc_1(spark):
         {"id": 4, "postcode": "AB123CD"},
         {"id": 5, "postcode": "AB1C 2DE"},
         {"id": 6, "postcode": "AB1C2DE"},
-        {"id": 7, "postcode": "  AB1 2CD "},
+        {"id": 7, "postcode": "  ab1 2CD "},
     ]
 
     df = spark.createDataFrame(Row(**x) for x in postcode_list)

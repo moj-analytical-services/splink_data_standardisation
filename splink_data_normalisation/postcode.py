@@ -12,7 +12,7 @@ def postcode_to_inward_outward(df: DataFrame, pc_field: str, drop_orig:bool = Tr
         pc_field (str): Name of field containing postcode
     """    
 
-    sql = f"replace({pc_field}, ' ', '')"
+    sql = f"upper(replace({pc_field}, ' ', ''))"
     df = df.withColumn("pc_nospace_temp__", expr(sql))
     
     sql = f"""left(pc_nospace_temp__, length(pc_nospace_temp__) - 3)"""
