@@ -16,11 +16,12 @@ def normalise_names(df:DataFrame, name_cols: list, drop_orig:bool=True):
 
 
     name_col_joined = ", ".join(name_cols)
+    surname_col_name = name_cols[-1]
     df = df.withColumn('name_concat', expr(f"concat_ws(' ', {name_col_joined})"))
     df = df.withColumn('name_concat', expr('lower(name_concat)'))
     df = df.withColumn('name_concat', expr("regexp_replace(name_concat, '[\\-\\.]', ' ')"))
     df = df.withColumn('name_arr', expr("split(name_concat, ' ')"))
-    df = df.withColumn('surname_norm', expr("case when surname is not null then element_at(name_arr,-1) else null end"))
+    df = df.withColumn('surname_norm', expr(f"case when {surname_col_name} is not null then element_at(name_arr,-1) else null end"))
     df = df.withColumn('forename1_norm', expr("case when size(name_arr) > 1 then element_at(name_arr,1) else null end"))
     df = df.withColumn('forename2_norm', expr("case when size(name_arr) > 2 then element_at(name_arr,2) else null end"))
     df = df.withColumn('forename3_norm', expr("case when size(name_arr) > 3 then element_at(name_arr,3) else null end"))
