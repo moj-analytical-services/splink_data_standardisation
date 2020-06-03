@@ -55,3 +55,12 @@ def test_fix_2(spark):
     df_expected = pd.DataFrame(df_expected)
 
     pd.testing.assert_frame_equal(df_result,df_expected)
+
+    # Check col not dropped if names are the same
+    df = spark.createDataFrame(Row(**x) for x in data_list)
+    df = remove_leading_zeros(df, "id_var", "id_var")
+    df_expected = df_expected.rename(columns={"id_var_norm": "id_var"})
+
+    
+    df_result = df.toPandas()
+    pd.testing.assert_frame_equal(df_result,df_expected)
