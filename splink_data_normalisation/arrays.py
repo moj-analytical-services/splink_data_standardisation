@@ -15,7 +15,7 @@ def fix_zero_length_arrays(df:DataFrame):
 
     stmt = """
     case 
-    when size({c}) > 0 then {c}
+    when size(filter({c}, x -> x is not null and trim(x) != '')) > 0 then filter({c}, x -> x is not null and trim(x) != '')
     else null
     end
     """
