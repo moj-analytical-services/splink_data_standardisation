@@ -1,6 +1,9 @@
 from pyspark.sql.dataframe import DataFrame
 from pyspark.sql.functions import expr, regexp_replace, col
 
+# One of the original motivations for this was problems with Athena handling arrays containing only a null (i.e. [None,], as opposed to None)
+# See here: https://forums.aws.amazon.com/thread.jspa?messageID=874178&tstart=0
+# This no longer seems to be a problem:  https://gist.github.com/RobinL/0692e2cd266483b3088646206aa8be62
 def fix_zero_length_arrays(df:DataFrame):
     """For every field of type array, turn zero length arrays into true nulls
 
