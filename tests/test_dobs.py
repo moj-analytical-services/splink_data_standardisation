@@ -3,7 +3,7 @@ import datetime
 import pytest
 import pandas as pd
 
-from splink_data_standardisation.date_of_birth import normalise_dob
+from splink_data_standardisation.date_of_birth import standardise_dob
 from pyspark.sql import Row
 
 def test_dob_1(spark):
@@ -23,47 +23,47 @@ def test_dob_1(spark):
     df = spark.createDataFrame(Row(**x) for x in names_list)
 
     expected = [
-        {"dob_norm": "2020-05-25"},
-        {"dob_norm": "2020-05-25"},
-        {"dob_norm": None}
+        {"dob_std": "2020-05-25"},
+        {"dob_std": "2020-05-25"},
+        {"dob_std": None}
         ]
     df_expected = pd.DataFrame(expected)
-    df2 = normalise_dob(df.select("dob_datetime"), "dob_datetime")
+    df2 = standardise_dob(df.select("dob_datetime"), "dob_datetime")
     df_result = df2.toPandas()
 
     pd.testing.assert_frame_equal(df_result,df_expected)
 
     expected = [
-        {"dob_norm": "2020-05-25"},
-        {"dob_norm": "2020-05-25"},
-        {"dob_norm": None}
+        {"dob_std": "2020-05-25"},
+        {"dob_std": "2020-05-25"},
+        {"dob_std": None}
         ]
     df_expected = pd.DataFrame(expected)
-    df2 = normalise_dob(df.select("dob_date"), "dob_date")
-    df_result = df2.toPandas()
-
-    pd.testing.assert_frame_equal(df_result,df_expected)
-
-
-    expected = [
-        {"dob_norm": "2020-05-25"},
-        {"dob_norm": None},
-        {"dob_norm": None}
-        ]
-    df_expected = pd.DataFrame(expected)
-    df2 = normalise_dob(df.select("dob_str"), "dob_str")
+    df2 = standardise_dob(df.select("dob_date"), "dob_date")
     df_result = df2.toPandas()
 
     pd.testing.assert_frame_equal(df_result,df_expected)
 
 
     expected = [
-        {"dob_norm": None},
-        {"dob_norm": "2020-05-25"},
-        {"dob_norm": None}
+        {"dob_std": "2020-05-25"},
+        {"dob_std": None},
+        {"dob_std": None}
         ]
     df_expected = pd.DataFrame(expected)
-    df2 = normalise_dob(df.select("dob_str"), "dob_str", "dd/MM/yyyy")
+    df2 = standardise_dob(df.select("dob_str"), "dob_str")
+    df_result = df2.toPandas()
+
+    pd.testing.assert_frame_equal(df_result,df_expected)
+
+
+    expected = [
+        {"dob_std": None},
+        {"dob_std": "2020-05-25"},
+        {"dob_std": None}
+        ]
+    df_expected = pd.DataFrame(expected)
+    df2 = standardise_dob(df.select("dob_str"), "dob_str", "dd/MM/yyyy")
     df_result = df2.toPandas()
 
     pd.testing.assert_frame_equal(df_result,df_expected)

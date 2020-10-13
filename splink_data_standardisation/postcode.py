@@ -3,7 +3,7 @@ from pyspark.sql.functions import expr
 
 def postcode_to_inward_outward(df: DataFrame, pc_field: str, drop_orig:bool = True):
     """Given a field containing a postcode, creates new columns in the dataframe
-    called outward_postcode_norm and inward_postcode_norm
+    called outward_postcode_std and inward_postcode_std
 
     Original postcode can have spaces or not and be in any case
 
@@ -26,7 +26,7 @@ def postcode_to_inward_outward(df: DataFrame, pc_field: str, drop_orig:bool = Tr
     """
     
     # sql = f"""left(pc_nospace_temp__, length(pc_nospace_temp__) - 3)"""
-    df = df.withColumn("outward_postcode_norm", expr(sql))
+    df = df.withColumn("outward_postcode_std", expr(sql))
 
     sql = f"""right(pc_nospace_temp__, 3)"""
 
@@ -37,7 +37,7 @@ def postcode_to_inward_outward(df: DataFrame, pc_field: str, drop_orig:bool = Tr
     end
     """
 
-    df = df.withColumn("inward_postcode_norm", expr(sql))
+    df = df.withColumn("inward_postcode_std", expr(sql))
 
     df = df.drop("pc_nospace_temp__")
 

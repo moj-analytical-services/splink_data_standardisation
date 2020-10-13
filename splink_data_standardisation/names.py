@@ -1,8 +1,8 @@
 from pyspark.sql.functions import expr
 from pyspark.sql.dataframe import DataFrame
 
-def normalise_names(df:DataFrame, name_cols: list, drop_orig:bool=True):
-    """Take a one or more name columns in a list and normalise the names
+def standardise_names(df:DataFrame, name_cols: list, drop_orig:bool=True):
+    """Take a one or more name columns in a list and standardise the names
     so one name appears in each column consistently
 
     Args:
@@ -11,7 +11,7 @@ def normalise_names(df:DataFrame, name_cols: list, drop_orig:bool=True):
         drop_orig (bool, optional): Drop the original columns after standardisation. Defaults to True.
 
     Returns:
-        DataFrame: A Spark DataFrame with normalised name columns
+        DataFrame: A Spark DataFrame with standardised name columns
     """
 
 
@@ -21,12 +21,12 @@ def normalise_names(df:DataFrame, name_cols: list, drop_orig:bool=True):
     df = df.withColumn('name_concat', expr('lower(name_concat)'))
     df = df.withColumn('name_concat', expr("regexp_replace(name_concat, '[\\-\\.]', ' ')"))
     df = df.withColumn('name_arr', expr("split(name_concat, ' ')"))
-    df = df.withColumn('surname_norm', expr(f"case when {surname_col_name} is not null then element_at(name_arr,-1) else null end"))
-    df = df.withColumn('forename1_norm', expr("case when size(name_arr) > 1 then element_at(name_arr,1) else null end"))
-    df = df.withColumn('forename2_norm', expr("case when size(name_arr) > 2 then element_at(name_arr,2) else null end"))
-    df = df.withColumn('forename3_norm', expr("case when size(name_arr) > 3 then element_at(name_arr,3) else null end"))
-    df = df.withColumn('forename4_norm', expr("case when size(name_arr) > 4 then element_at(name_arr,4) else null end"))
-    df = df.withColumn('forename5_norm', expr("case when size(name_arr) > 5 then element_at(name_arr,5) else null end"))
+    df = df.withColumn('surname_std', expr(f"case when {surname_col_name} is not null then element_at(name_arr,-1) else null end"))
+    df = df.withColumn('forename1_std', expr("case when size(name_arr) > 1 then element_at(name_arr,1) else null end"))
+    df = df.withColumn('forename2_std', expr("case when size(name_arr) > 2 then element_at(name_arr,2) else null end"))
+    df = df.withColumn('forename3_std', expr("case when size(name_arr) > 3 then element_at(name_arr,3) else null end"))
+    df = df.withColumn('forename4_std', expr("case when size(name_arr) > 4 then element_at(name_arr,4) else null end"))
+    df = df.withColumn('forename5_std', expr("case when size(name_arr) > 5 then element_at(name_arr,5) else null end"))
     df = df.drop("name_arr", "name_concat")
     if drop_orig:
         for n in name_cols:
