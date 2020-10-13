@@ -37,6 +37,10 @@ def null_out_entries_with_freq_above_n(df: DataFrame, colname: str, n: int, spar
     collected = df_groups.collect()
 
     values_to_null = [row["count"] for row in collected]
+    
+    if len(values_to_null) == 0:
+        return df
+    
     values_to_null = [f'"{v}"' for v in values_to_null]
     values_to_null_joined = ", ".join(values_to_null)
 
