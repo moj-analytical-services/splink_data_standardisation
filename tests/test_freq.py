@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 
-from splink_data_normalisation.freq import null_out_entries_with_freq_above_n
+from splink_data_standardisation.freq import null_out_entries_with_freq_above_n
 from pyspark.sql import Row
 
 

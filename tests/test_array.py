@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 
-from splink_data_normalisation.arrays import fix_zero_length_arrays
+from splink_data_standardisation.arrays import fix_zero_length_arrays
 from pyspark.sql import Row
 
 
@@ -19,7 +19,7 @@ def test_fix_1(spark):
     df = spark.createDataFrame(Row(**x) for x in names_list)
     df = df.select(list(names_list[0].keys()))
     df = fix_zero_length_arrays(df)
-    
+
     df_result = df.toPandas()
 
     df_expected = [

@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 
-from splink_data_normalisation.fix_string import fix_zero_length_strings, remove_leading_zeros
+from splink_data_standardisation.fix_string import fix_zero_length_strings, remove_leading_zeros
 from pyspark.sql import Row
 
 
@@ -17,7 +17,7 @@ def test_fix_1(spark):
     df = df.select(list(names_list[0].keys()))
 
     df = fix_zero_length_strings(df)
-    
+
     df_result = df.toPandas()
 
     df_expected = [
@@ -61,6 +61,6 @@ def test_fix_2(spark):
     df = remove_leading_zeros(df, "id_var", "id_var")
     df_expected = df_expected.rename(columns={"id_var_norm": "id_var"})
 
-    
+
     df_result = df.toPandas()
     pd.testing.assert_frame_equal(df_result,df_expected)
