@@ -2,7 +2,7 @@
 import pytest
 import pandas as pd
 
-from splink_data_standardisation.names import normalise_names
+from splink_data_standardisation.names import standardise_names
 from pyspark.sql import Row
 
 def test_names_1(spark):
@@ -14,14 +14,14 @@ def test_names_1(spark):
         ]
 
     df = spark.createDataFrame(Row(**x) for x in names_list)
-    df = normalise_names(df, ["first_name", "surname"])
+    df = standardise_names(df, ["first_name", "surname"])
 
     df_result = df.toPandas()
 
     df_expected = [
-     {'id': 1, 'surname_norm': 'jones', 'forename1_norm': 'john', 'forename2_norm': 'smith', 'forename3_norm': None, 'forename4_norm': None, 'forename5_norm': None},
-     {'id': 2, 'surname_norm': 'jones', 'forename1_norm': 'john', 'forename2_norm': 'smith', 'forename3_norm': None, 'forename4_norm': None, 'forename5_norm': None},
-     {'id': 3, 'surname_norm': 'jones', 'forename1_norm': 'john', 'forename2_norm': 'smith', 'forename3_norm': None, 'forename4_norm': None, 'forename5_norm': None}
+     {'id': 1, 'surname_std': 'jones', 'forename1_std': 'john', 'forename2_std': 'smith', 'forename3_std': None, 'forename4_std': None, 'forename5_std': None},
+     {'id': 2, 'surname_std': 'jones', 'forename1_std': 'john', 'forename2_std': 'smith', 'forename3_std': None, 'forename4_std': None, 'forename5_std': None},
+     {'id': 3, 'surname_std': 'jones', 'forename1_std': 'john', 'forename2_std': 'smith', 'forename3_std': None, 'forename4_std': None, 'forename5_std': None}
      ]
 
     df_expected = pd.DataFrame(df_expected)
@@ -35,13 +35,13 @@ def test_names_1(spark):
         ]
 
     df = spark.createDataFrame(Row(**x) for x in names_list)
-    df = normalise_names(df, ["first_name", "middle_name", "surname"])
+    df = standardise_names(df, ["first_name", "middle_name", "surname"])
 
     df_result = df.toPandas()
 
     df_expected = [
-     {'id': 1, 'surname_norm': 'jones', 'forename1_norm': 'john', 'forename2_norm': 'james', 'forename3_norm': "peter", 'forename4_norm': "smith", 'forename5_norm': None},
-     {'id': 2, 'surname_norm': 'jones', 'forename1_norm': 'john', 'forename2_norm': 'james', 'forename3_norm': "peter", 'forename4_norm': "smith", 'forename5_norm': None},
+     {'id': 1, 'surname_std': 'jones', 'forename1_std': 'john', 'forename2_std': 'james', 'forename3_std': "peter", 'forename4_std': "smith", 'forename5_std': None},
+     {'id': 2, 'surname_std': 'jones', 'forename1_std': 'john', 'forename2_std': 'james', 'forename3_std': "peter", 'forename4_std': "smith", 'forename5_std': None},
 
      ]
 

@@ -30,18 +30,18 @@ def test_pc_1(spark):
     df_result = df.toPandas()
 
     expected = [
-        {"id": 1, "outward_postcode_norm": "AB1", "inward_postcode_norm": "2CD"},
-        {"id": 2, "outward_postcode_norm": "AB1", "inward_postcode_norm": "2CD"},
-        {"id": 3, "outward_postcode_norm": "AB12", "inward_postcode_norm": "3CD"},
-        {"id": 4, "outward_postcode_norm": "AB12", "inward_postcode_norm": "3CD"},
-        {"id": 5, "outward_postcode_norm": "AB1C", "inward_postcode_norm": "2DE"},
-        {"id": 6, "outward_postcode_norm": "AB1C", "inward_postcode_norm": "2DE"},
-        {"id": 7, "outward_postcode_norm": "AB1", "inward_postcode_norm": "2CD"},
-        {"id": 8, "outward_postcode_norm": "AB", "inward_postcode_norm": "12C"},
-        {"id": 9, "outward_postcode_norm": "AB12", "inward_postcode_norm": None},
-        {"id": 10, "outward_postcode_norm": "AB1", "inward_postcode_norm": None},
-        {"id": 11, "outward_postcode_norm": "B8", "inward_postcode_norm": "3QF"},
-        {"id": 12, "outward_postcode_norm": "B8", "inward_postcode_norm": "3QF"},
+        {"id": 1, "outward_postcode_std": "AB1", "inward_postcode_std": "2CD"},
+        {"id": 2, "outward_postcode_std": "AB1", "inward_postcode_std": "2CD"},
+        {"id": 3, "outward_postcode_std": "AB12", "inward_postcode_std": "3CD"},
+        {"id": 4, "outward_postcode_std": "AB12", "inward_postcode_std": "3CD"},
+        {"id": 5, "outward_postcode_std": "AB1C", "inward_postcode_std": "2DE"},
+        {"id": 6, "outward_postcode_std": "AB1C", "inward_postcode_std": "2DE"},
+        {"id": 7, "outward_postcode_std": "AB1", "inward_postcode_std": "2CD"},
+        {"id": 8, "outward_postcode_std": "AB", "inward_postcode_std": "12C"},
+        {"id": 9, "outward_postcode_std": "AB12", "inward_postcode_std": None},
+        {"id": 10, "outward_postcode_std": "AB1", "inward_postcode_std": None},
+        {"id": 11, "outward_postcode_std": "B8", "inward_postcode_std": "3QF"},
+        {"id": 12, "outward_postcode_std": "B8", "inward_postcode_std": "3QF"},
 
     ]
 

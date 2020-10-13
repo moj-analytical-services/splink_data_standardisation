@@ -41,15 +41,15 @@ def test_fix_2(spark):
 
 
     df = spark.createDataFrame(Row(**x) for x in data_list)
-    df = remove_leading_zeros(df, "id_var", "id_var_norm")
+    df = remove_leading_zeros(df, "id_var", "id_var_std")
 
     df_result = df.toPandas()
 
     df_expected = [
-        {"id": 1, "id_var_norm": "123"},
-        {"id": 2, "id_var_norm": "abc"},
-        {"id": 3, "id_var_norm": " 0def"},
-        {"id": 4, "id_var_norm": "1000"},
+        {"id": 1, "id_var_std": "123"},
+        {"id": 2, "id_var_std": "abc"},
+        {"id": 3, "id_var_std": " 0def"},
+        {"id": 4, "id_var_std": "1000"},
     ]
 
     df_expected = pd.DataFrame(df_expected)
@@ -59,7 +59,7 @@ def test_fix_2(spark):
     # Check col not dropped if names are the same
     df = spark.createDataFrame(Row(**x) for x in data_list)
     df = remove_leading_zeros(df, "id_var", "id_var")
-    df_expected = df_expected.rename(columns={"id_var_norm": "id_var"})
+    df_expected = df_expected.rename(columns={"id_var_std": "id_var"})
 
 
     df_result = df.toPandas()

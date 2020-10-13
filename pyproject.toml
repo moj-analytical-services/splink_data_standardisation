@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "splink_data_standardisation"
-version = "0.1.2"
+version = "0.2.0"
 description = ""
 authors = ["Robin Linacre <robin.linacre@digital.justice.gov.uk>"]
 license = "MIT"
