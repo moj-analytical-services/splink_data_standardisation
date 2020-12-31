@@ -53,21 +53,20 @@ def null_out_values_array(df: DataFrame, array_colname: str, values_to_null):
 
     values_to_null_string = [f'"{v}"' for v in values_to_null]
     values_to_null_joined = ", ".join(values_to_null_string)
-    
-    
-    mappingstr=f"""
+
+    mappingstr = f"""
     CASE WHEN x in ({values_to_null_joined}) THEN NULL
     ELSE x
-    END""" 
-    
-    sqlstr=f"""
+    END"""
+
+    sqlstr = f"""
     TRANSFORM({array_colname}, x -> {mappingstr}) 
     """
-    
+
     if str((dict(df.dtypes)[array_colname])).startswith("array"):
         df = df.withColumn(array_colname, f.expr(sqlstr))
     else:
-        #if column is not an array fall back to null_out_values
+        # if column is not an array fall back to null_out_values
         df = null_out_values(df, array_colname, values_to_null)
 
     return df
