@@ -68,9 +68,9 @@ def null_out_values_array(df: DataFrame, array_colname: str, values_to_null: lis
 
 
 def remove_special_character_values_within_array(df: DataFrame, array_colname: str):
-       """Null out a preset list of undesirable values in a column that contains an array of values
+    """Null out a preset list of undesirable values in a column that contains an array of values
     Useful for columns that mostly contain valid data but occasionally
-    contain other values such as \n \" etc
+    contain other values such as newlines etc
     
     Args:
         df (DataFrame): The dataframe to clean
@@ -81,7 +81,6 @@ def remove_special_character_values_within_array(df: DataFrame, array_colname: s
     """
 
     special_character_values = [
-        "\n",
         "'",
         '""',
         "\\n",
@@ -90,9 +89,12 @@ def remove_special_character_values_within_array(df: DataFrame, array_colname: s
         '""',
         "\\t",
         "\\n",
-        "\r",
-        "\b",
+        "\\r",
+        "\\b",
         "\/",
+        "\n",
+        "\r",
+        "\b"
     ]
 
     return null_out_values_array(df, array_colname, special_character_values)
