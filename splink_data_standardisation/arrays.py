@@ -1,5 +1,6 @@
 from pyspark.sql.dataframe import DataFrame
 from pyspark.sql.functions import expr, regexp_replace, col
+import pyspark.sql.functions as f
 
 # This fixes a problem where athena can't handle a parquet file with a zero length array
 # so [None] is fine, and so is None, but [] is not
@@ -40,4 +41,23 @@ def fix_zero_length_array(column_name: str, df: DataFrame):
     """
 
     df = df.withColumn(column_name, expr(stmt))
+    return df
+
+
+def remove_leading_zeros_array(df: DataFrame, array_colname: str):
+    """Remove leading zeros from values of an array column
+    Args:
+        df (DataFrame): Input Spark dataframe
+        array_colname (str): Column name of array column to remove leading zeros from values
+   
+    """
+
+    stmt = f""" 
+    
+    TRANSFORM({array_colname}, x -> regexp_replace(x, "^0+", "")) 
+    
+    """
+
+    df = df.withColumn(array_colname, f.expr(stmt))
+
     return df
