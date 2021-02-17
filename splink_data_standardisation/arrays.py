@@ -16,26 +16,33 @@ def fix_zero_length_arrays(df: DataFrame):
         DataFrame: Spark Dataframe with clean arrays
     """
 
-    array_cols = [item[0] for item in df.dtypes if item[1].startswith("array")]
+    array_cols = [
+        (item[0], not(item[1].startswith("array<array")))
+        for item in df.dtypes
+        if item[1].startswith("array")
+    ]
 
-    for c in array_cols:
-        df = fix_zero_length_array(c, df)
+    for c, trim in array_cols:
+        df = fix_zero_length_array(c, df, trim)
 
     return df
 
 
-def fix_zero_length_array(column_name: str, df: DataFrame):
+def fix_zero_length_array(column_name: str, df: DataFrame, trim: bool = True):
     """Turn zero length arrays into true nulls for a single column
 
     Args:
         column_name (str): Col name
         df (DataFrame): Dataframe in which the column resides
+        trim (bool): Flag to trim whitespace (defaults to True)
     """
+
+    trim_expr = "and trim(x) != ''" if trim else ""
 
     stmt = f"""
     case
-    when size(filter({column_name}, x -> x is not null and trim(x) != '')) > 0
-    then filter({column_name}, x -> x is not null and trim(x) != '')
+    when size(filter({column_name}, x -> x is not null {trim_expr})) > 0
+    then filter({column_name}, x -> x is not null {trim_expr})
     else null
     end
     """
