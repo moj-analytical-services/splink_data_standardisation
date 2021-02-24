@@ -15,15 +15,25 @@ def fix_zero_length_arrays(df: DataFrame):
         DataFrame: Spark Dataframe with clean arrays
     """
 
-    array_cols = [item[0] for item in df.dtypes if item[1].startswith("array")]
+    array_cols_of_strings = []
+    other_array_cols = []
 
-    for c in array_cols:
-        df = fix_zero_length_array(c, df)
+    for item in df.dtypes:
+        if item[1].startswith("array"):
+            if item[1] == "array<string>":
+                array_cols_of_strings.append(item[0])
+            else:
+                other_array_cols.append(item[0])
+
+    for c in array_cols_of_strings:
+        df = fix_zero_length_array(c, df, col_is_string=True)
+    for c in other_array_cols:
+        df = fix_zero_length_array(c, df, col_is_string=False)
 
     return df
 
 
-def fix_zero_length_array(column_name: str, df: DataFrame):
+def fix_zero_length_array(column_name: str, df: DataFrame, col_is_string=False):
     """Turn zero length arrays into true nulls for a single column
 
     Args:
@@ -31,13 +41,22 @@ def fix_zero_length_array(column_name: str, df: DataFrame):
         df (DataFrame): Dataframe in which the column resides
     """
 
-    stmt = f"""
-    case
-    when size(filter({column_name}, x -> x is not null and trim(x) != '')) > 0
-    then filter({column_name}, x -> x is not null and trim(x) != '')
-    else null
-    end
-    """
+    if col_is_string:
+        stmt = f"""
+        case
+        when size(filter({column_name}, x -> x is not null and trim(x) != '')) > 0
+        then filter({column_name}, x -> x is not null and trim(x) != '')
+        else null
+        end
+        """
+    else:
+        stmt = f"""
+        case
+        when size(filter({column_name}, x -> x is not null)) > 0
+        then filter({column_name}, x -> x is not null)
+        else null
+        end
+        """
 
     df = df.withColumn(column_name, expr(stmt))
     return df
