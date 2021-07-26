@@ -20,6 +20,7 @@ def standardise_names(df:DataFrame, name_cols: list, drop_orig:bool=True):
     df = df.withColumn('name_concat', expr(f"concat_ws(' ', {name_col_joined})"))
     df = df.withColumn('name_concat', expr('lower(name_concat)'))
     df = df.withColumn('name_concat', expr("regexp_replace(name_concat, '[\\-\\.]', ' ')"))
+    df = df.withColumn('name_concat', expr("trim(name_concat)"))
     df = df.withColumn('name_arr', expr("split(name_concat, ' ')"))
     df = df.withColumn('surname_std', expr(f"case when {surname_col_name} is not null then element_at(name_arr,-1) else null end"))
     df = df.withColumn('forename1_std', expr("case when size(name_arr) > 1 then element_at(name_arr,1) else null end"))
