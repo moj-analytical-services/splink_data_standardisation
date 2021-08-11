@@ -1,7 +1,7 @@
 from pyspark.sql.functions import expr
 from pyspark.sql.dataframe import DataFrame
 
-def standardise_names(df, name_cols: list, drop_orig:bool=True, retain_surname:bool=False, split_hyphens:bool=True):
+def standardise_names(df:DataFrame, name_cols: list, drop_orig:bool=True, retain_surname:bool=False, split_hyphens:bool=True):
     """Take a one or more name columns in a list and standardise the names
     so one name appears in each column consistently
     Args:
