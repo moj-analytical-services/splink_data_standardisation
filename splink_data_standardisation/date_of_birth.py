@@ -52,11 +52,11 @@ def null_suspicious_dob_std(df: DataFrame, dob_col: str = "dob_std"):
         DataFrame: Original dataframe with suspicious dates of birth nulled out 
     """    
 
-    case_stmt = """
+    case_stmt = f"""
         case 
-        when dob_std = "1900-01-01" then null 
-        when dob_std = "1970-01-01" then null 
-        else dob_std end
+        when {dob_col} = "1900-01-01" then null 
+        when {dob_col} = "1970-01-01" then null 
+        else {dob_col} end
 
     """
     df = df.withColumn(dob_col, expr(case_stmt))
